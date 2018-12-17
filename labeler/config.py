@@ -1,5 +1,4 @@
 DATA_MAP = {
-    
     'dun163': {
         'folder': 'dun163',
         'image': '(.*)\.png',
