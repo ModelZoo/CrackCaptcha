@@ -23,31 +23,44 @@ def index():
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
-    result = []
     dataset = request.args.get('dataset', default_dataset)
     page = int(request.args.get('page', 1))
     
-    for file in listdir(join('data', dataset)):
-        if re.match(data_map[type]['image'], file):
-            result.append(file)
-    # sort result
-    result = sorted(result)
-    # slice result
-    result = result[(page - 1) * limit:page * limit]
+    # find, filter, sort, slice
+    files = list(listdir(join('datasets', dataset)))
+    files = list(filter(lambda file: re.match(data_map[dataset]['image'], file), files))
+    files = sorted(files)
+    files = files[(page - 1) * limit:page * limit]
+    
+    # transfer to result
+    result = []
+    for index, file in enumerate(files):
+        image_path = join('datasets', dataset, file)
+        label_path = re.sub(data_map[dataset]['image'], data_map[dataset]['label'], image_path)
+        print(label_path)
+        label = open(label_path).read().strip() if exists(label_path) else -1
+        result.append({
+            'image': join('static', image_path),
+            'label': float(label),
+            'name': file,
+            'page': page,
+            'offset': index
+        })
     return json.dumps(result)
 
 
-@app.route('/update', methods=['GET', 'POST'])
+@app.route('/label', methods=['GET', 'POST'])
 def update():
-    label = request.form['label']
-    label_file = request.form['label_file']
-    with open(label_file, 'w', encoding='utf-8') as f:
-        f.write(label)
-    checked_file = label_file.replace('.label', '.checked.filter')
-    with open(checked_file, 'w', encoding='utf-8') as f:
-        f.write('1')
+    name = request.form['name']
+    dataset = request.form['dataset']
+    ratio = request.form['ratio']
+    image_path = join('datasets', dataset, name)
+    label_path = re.sub(data_map[dataset]['image'], data_map[dataset]['label'], image_path)
+    with open(label_path, 'w', encoding='utf-8') as f:
+        f.write(ratio)
     return json.dumps({
-        'result': 1
+        'label': ratio,
+        'success': 1
     })
 
 

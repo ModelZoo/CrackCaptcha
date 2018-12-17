@@ -3,23 +3,44 @@
 {% block main %}
 
 <el-row>
-	<el-col :span="12" :offset="3">
+	<el-col :span="18" :offset="3">
 		<el-row class="tac">
-			<el-col :span="6">
+			<el-col :span="3">
 				<el-menu
-					default-active="2"
-					class="el-menu-vertical-demo"
-					@open="handleOpen"
-					@close="handleClose">
+					default-active="2">
 					<el-menu-item index="3">
 						<i class="el-icon-document"></i>
-						<span slot="title">导航三</span>
-					</el-menu-item>
-					<el-menu-item index="4">
-						<i class="el-icon-setting"></i>
-						<span slot="title">导航四</span>
+						<span slot="title">网易易盾</span>
 					</el-menu-item>
 				</el-menu>
+			</el-col>
+			<el-col :span="21">
+				<el-row :gutter="15">
+					<el-col :span="12" v-for="item in items" class="captcha-item text-center">
+						<el-card shadow="hover">
+							<div>
+								<p>[[ item['page'] ]]-[[ item['offset'] + 1 ]] [[ item['name'] ]]</p>
+								<img :src="item['image']" class="captcha-image" @click="onLabel" :name="item['name']">
+								<p :class="item['label']==-1?'red':''">Offset: [[ item['label'] !== -1 ? item['label'] * imageWidth :
+									'NaN' ]] </p>
+								<p :class="item['label']==-1?'red':''">Ratio: [[ item['label'] !== -1 ? item['label']: 'NaN' ]] </p>
+							</div>
+						</el-card>
+					</el-col>
+				</el-row>
+			</el-col>
+		</el-row>
+		<el-row>
+			<el-col :span="24">
+				<div class="block">
+					<el-pagination
+						class="pull-right"
+						@current-change="onPageChange"
+						:current-page.sync="pageCurrent"
+						:page-size="pageSize"
+						layout="prev, pager, next, jumper">
+					</el-pagination>
+				</div>
 			</el-col>
 		</el-row>
 	</el-col>
@@ -33,20 +54,82 @@
 	new Vue({
 		el: '#app',
 		data() {
-			return {}
+			return {
+				dataset: 'dun163',
+				pageCurrent: 1,
+				pageSize: 10,
+				items: [],
+				imageWidth: 300
+			}
 		},
 		computed: {},
 		mounted() {
-
+			this.onLoadData()
 		},
 		methods: {
-			handleOpen(key, keyPath) {
-				console.log(key, keyPath);
+			onPageChange(val) {
+				console.log('Val', val)
+				this.page = val
+				this.onLoadData()
 			},
-			handleClose(key, keyPath) {
-				console.log(key, keyPath);
+			onLoadData() {
+				$.ajax({
+					url: '/data',
+					dataType: 'json',
+					data: {
+						dataset: this.dataset,
+						page: this.pageCurrent
+					},
+					success: (data) => {
+						this.items = data
+					},
+					error: () => {
+						this.$message.error('加载失败')
+					}
+				})
+			},
+			onLabel(event) {
+				console.log(event)
+				console.log('Ele x', event.toElement.x)
+				console.log('x', event.x)
+				console.log('offset', event.x - event.toElement.x)
+				let offset = event.x - event.toElement.x
+				let ratio = offset / this.imageWidth
+				$.ajax({
+					url: '/label',
+					dataType: 'json',
+					method: 'post',
+					data: {
+						dataset: this.dataset,
+						name: event.toElement.name,
+						ratio: ratio
+					},
+					success: ({success: success, label: label}) => {
+						this.onLoadData()
+					},
+					error: () => {
+						this.$message.error('加载失败')
+					}
+				})
 			}
 		}
 	})
 </script>
+{% endblock %}
+
+{% block style %}
+<style>
+	.captcha-item {
+		margin-bottom: 15px;
+	}
+
+	.captcha-image {
+		width: 300px;
+		margin-bottom: 15px;
+	}
+
+	.red {
+		color: red;
+	}
+</style>
 {% endblock %}
