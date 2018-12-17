@@ -10,19 +10,32 @@ app = Flask(__name__)
 from os.path import join, exists, isdir
 from os import listdir, makedirs
 import re
+from labeler.config import DATA_MAP as data_map, DEFAULT_DATASET as default_dataset, LIMIT_PER_PAGE as limit
 
 cors(app)
 
 
 @app.route('/')
 def index():
-    return render_template('check.html')
+    dataset = request.args.get('dataset', default_dataset)
+    return render_template(f'{dataset}.html')
 
 
 @app.route('/data', methods=['GET', 'POST'])
 def data():
-    # label_file =
-    pass
+    result = []
+    dataset = request.args.get('dataset', default_dataset)
+    page = int(request.args.get('page', 1))
+    
+    for file in listdir(join('data', dataset)):
+        if re.match(data_map[type]['image'], file):
+            result.append(file)
+    # sort result
+    result = sorted(result)
+    # slice result
+    result = result[(page - 1) * limit:page * limit]
+    return json.dumps(result)
+
 
 @app.route('/update', methods=['GET', 'POST'])
 def update():
@@ -38,8 +51,9 @@ def update():
     })
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
+def run():
     app.run(debug=True,
             host='0.0.0.0',
             # ssl_context='adhoc',
-            port=5557)
+            port=5000)
