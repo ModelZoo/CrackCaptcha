@@ -51,7 +51,7 @@ class Trainer(BaseTrainer):
         
         x_data, y_data = np.asarray(x_data, dtype=np.float32), np.asarray(y_data, dtype=np.float32)
         
-        # x_data /= 255.0
+        x_data /= 255.0
         print('X Data Shape', x_data.shape, 'Y Data Shape', y_data.shape)
         
         x_train, x_eval, y_train, y_eval = train_test_split(x_data, y_data, test_size=0.33, random_state=42)
