@@ -28,8 +28,12 @@ class Trainer(BaseTrainer):
         dataset = self.flags.dataset
         dataset_dir = join(datasets_dir, dataset)
         # get all labeled data
+        count = 0
         for file in listdir(dataset_dir):
             if file.endswith('.txt'):
+                count += 1
+                if count % 500 == 0:
+                    print('Processed', count, 'Files')
                 image_path = join(datasets_dir, dataset, file.replace('.txt', '.png'))
                 label_path = join(datasets_dir, dataset, file)
                 if exists(image_path) and exists(label_path):
