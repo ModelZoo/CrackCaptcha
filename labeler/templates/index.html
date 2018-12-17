@@ -1,10 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
+	<title>读心术</title>
 	<meta charset="UTF-8">
-	<title>$Title$</title>
+	<!-- import CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 </head>
 <body>
-$END$
+<div id="app">
+	<el-row>
+		<el-col :span="12" :offset="6">
+			<h3 class="text-center">读心术</h3>
+			<div>
+				<div v-for="item in items">
+					<el-row>
+						<el-col :span="1">
+							[[ item['index'] ]]
+						</el-col>
+						<el-col :span="3">
+							[[ item['sr_result'] ]]
+						</el-col>
+						<el-col :span="1">
+							[[ item['track_result'] ]]
+						</el-col>
+						<el-col :span="2">
+							<p v-if="item['checked']">YES</p>
+							<p v-else><span style="color:red">NO</span></p>
+						</el-col>
+						<el-col :span="9">
+							<video :src="item['video']" controls></video>
+						</el-col>
+						<el-col :span="4">
+							<el-input v-model="item['label']"></el-input>
+						</el-col>
+						<el-col :span="4">
+							<el-button @click="update(item)">save</el-button>
+							<el-button @click="error(item)">error</el-button>
+						</el-col>
+					</el-row>
+				</div>
+
+			</div>
+			<div class="block">
+				<el-pagination
+					@size-change="sizeChange"
+					@current-change="currentChange"
+					:current-page="page"
+					:page-sizes="[100, 200, 300, 400]"
+					:page-size="perPage"
+					layout="total, sizes, prev, pager, next, jumper"
+					:total="toalPage">
+				</el-pagination>
+			</div>
+
+		</el-col>
+	</el-row>
+</div>
 </body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+	Vue.options.delimiters = ["[[", "]]"]
+	new Vue({
+		el: '#app',
+		data() {
+			return {
+				items: [],
+				page: 1,
+				perPage: 50,
+				totalPage: 1000
+			}
+		},
+		computed: {},
+		mounted() {
+			this.fetch()
+		},
+		methods: {
+			update(item) {
+				$.ajax({
+					url: '/update',
+					data: item,
+					method: 'POST',
+					dataType: 'json',
+					success: ({result: result}) => {
+						if (result == '1') {
+							this.$message.success('OK')
+							this.fetch(this.page)
+
+						}
+					},
+				})
+			},
+			error(item) {
+				$.ajax({
+					url: '/update',
+					data: {
+						label: '-1',
+						label_file: item['label_file']
+					},
+					method: 'POST',
+					dataType: 'json',
+					success: ({result: result}) => {
+						if (result == '1') {
+							this.$message.success('OK')
+							this.fetch(this.page)
+						}
+					},
+				})
+			},
+			fetch(page) {
+				$.ajax({
+					url: '/datas',
+					data: {
+						page: page,
+						per_page: this.perPage
+					},
+					dataType: 'json',
+					success: ({results: items, total: total}) => {
+						this.items = items
+						this.totalPage = total
+					}
+				})
+			},
+			currentChange(page) {
+				console.log(page)
+				this.fetch(page)
+				this.page = page
+			},
+			sizeChange(val) {
+				this.perPage = val
+			},
+		}
+	})
+</script>
+<style>
+	.text-center {
+		text-align: center;
+	}
+
+	video {
+		width: 100%;
+	}
+
+	.pull-right {
+		float: right;
+	}
+
+	#btn-custom {
+		margin-right: 10px;
+	}
+
+	#form-custom {
+		padding-top: 10px;
+	}
+
+	#answers p {
+		font-size: 18px !important;
+		margin-bottom: 10px;
+	}
+
+	audio {
+		display: none;
+	}
+
+	#id {
+		width: 200px;
+	}
+
+	#messages {
+		border: 1px solid #EEE;
+		padding: 20px;
+		height: 300px;
+		overflow: scroll;
+		margin-bottom: 10px;
+	}
+</style>
 </html>
