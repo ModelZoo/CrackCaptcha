@@ -18,7 +18,6 @@ tf.flags.DEFINE_string('model_class', 'VGGModel', help='Model restore')
 
 
 class Trainer(BaseTrainer):
-    
     def generate_data(self):
         """
         build generator of data
@@ -28,12 +27,8 @@ class Trainer(BaseTrainer):
         datasets_dir = self.flags.datasets_dir
         dataset = self.flags.dataset
         dataset_dir = join(datasets_dir, dataset)
-        # count value
-        count = 0
         # get all labeled data
         for file in listdir(dataset_dir):
-            count += 1
-            print(count)
             if file.endswith('.txt'):
                 image_path = join(datasets_dir, dataset, file.replace('.txt', '.png'))
                 label_path = join(datasets_dir, dataset, file)
