@@ -14,6 +14,10 @@ tf.flags.DEFINE_integer('image_height', 300, help='Image height')
 class Inferer(BaseInferer):
     
     def prepare_data(self):
+        """
+        prepare test data
+        :return:
+        """
         test_dir = self.flags.test_dir
         items = sorted(list(listdir(test_dir)))
         items_path = list(map(lambda x: join(test_dir, x), items))
@@ -25,6 +29,11 @@ class Inferer(BaseInferer):
         return test_data
     
     def process_image(self, image_file):
+        """
+        read image by cv2
+        :param image_file:
+        :return:
+        """
         image = cv2.imread(image_file)
         image = cv2.resize(image, (self.flags.image_height, self.flags.image_width))
         return image.tolist()
