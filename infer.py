@@ -5,7 +5,7 @@ from os import listdir
 from os.path import join
 import numpy as np
 
-tf.flags.DEFINE_string('checkpoint_name', 'model.ckpt-20', help='Model name')
+tf.flags.DEFINE_string('checkpoint_name', 'model.ckpt-10', help='Model name')
 tf.flags.DEFINE_string('test_dir', 'tests/dun163', help='Test dir')
 tf.flags.DEFINE_integer('image_width', 600, help='Image width')
 tf.flags.DEFINE_integer('image_height', 300, help='Image height')
