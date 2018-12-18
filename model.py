@@ -75,6 +75,7 @@ class VGGModel(BaseModel):
         self.drop7 = tf.keras.layers.Dropout(0.5)
         
         self.dense4 = tf.keras.layers.Dense(1)
+        self.reshape = tf.keras.layers.Reshape([])
     
     def call(self, inputs, training=None, mask=None):
         # layer1
@@ -121,6 +122,7 @@ class VGGModel(BaseModel):
         x = self.dense3(x)
         x = self.drop7(x, training=training)
         x = self.dense4(x)
+        x = self.reshape(x)
         return x
     
     def optimizer(self):
