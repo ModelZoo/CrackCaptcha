@@ -16,6 +16,7 @@ tf.flags.DEFINE_integer('early_stop_patience', 500, help='Early stop patience')
 tf.flags.DEFINE_bool('checkpoint_restore', True, help='Model restore')
 tf.flags.DEFINE_string('model_class', 'VGGModel', help='Model restore')
 tf.flags.DEFINE_integer('batch_size', 5, help='Batch size')
+tf.flags.DEFINE_integer('checkpoint_save_freq', 5, help='Save model every epoch number')
 
 
 class Trainer(BaseTrainer):
