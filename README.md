@@ -20,3 +20,9 @@ python3 train.py
 
 to run the training process.
 
+## Loss
+
+![](https://ws3.sinaimg.cn/large/006tNbRwgy1fyaxat4h67j30sd0ixmxx.jpg)
+
+![](https://ws1.sinaimg.cn/large/006tNbRwgy1fyaxb21on3j30st0itwfd.jpg)
+

@@ -30,12 +30,8 @@ class Trainer(BaseTrainer):
         dataset = self.flags.dataset
         dataset_dir = join(datasets_dir, dataset)
         # get all labeled data
-        count = 0
         for file in listdir(dataset_dir):
             if file.endswith('.txt'):
-                count += 1
-                if count % 500 == 0:
-                    print('Processed', count, 'Files')
                 image_path = join(datasets_dir, dataset, file.replace('.txt', '.png'))
                 label_path = join(datasets_dir, dataset, file)
                 if exists(image_path) and exists(label_path):
@@ -56,12 +52,11 @@ class Trainer(BaseTrainer):
             y_data.append(label)
         
         x_data, y_data = np.asarray(x_data, dtype=np.float32), np.asarray(y_data, dtype=np.float32)
-        
         x_data /= 255.0
-        print('X Data Shape', x_data.shape, 'Y Data Shape', y_data.shape)
-        
         x_train, x_eval, y_train, y_eval = train_test_split(x_data, y_data, test_size=0.33, random_state=42)
+        
         print('Sample', x_train[0], y_train[0], x_train.dtype, y_train.dtype)
+        print('X Data Shape', x_data.shape, 'Y Data Shape', y_data.shape)
         return (x_train, y_train), (x_eval, y_eval)
 
 
