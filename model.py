@@ -74,7 +74,7 @@ class VGGModel(BaseModel):
         self.dense3 = tf.keras.layers.Dense(2 * self.num_features, activation='relu')
         self.drop7 = tf.keras.layers.Dropout(0.5)
         
-        self.dense4 = tf.keras.layers.Dense(1, activation='softmax')
+        self.dense4 = tf.keras.layers.Dense(1)
     
     def call(self, inputs, training=None, mask=None):
         # layer1
