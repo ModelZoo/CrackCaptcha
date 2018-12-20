@@ -85,11 +85,11 @@ class VGGModel(BaseModel):
         x = self.pool1(x)
         x = self.drop1(x, training=training)
         # layer2
-        # x = self.conv21(x)
-        # x = self.conv22(x)
-        # x = self.bn2(x, training=training)
-        # x = self.pool2(x)
-        # x = self.drop2(x, training=training)
+        x = self.conv21(x)
+        x = self.conv22(x)
+        x = self.bn2(x, training=training)
+        x = self.pool2(x)
+        x = self.drop2(x, training=training)
         # # layer3
         # x = self.conv31(x)
         # x = self.conv32(x)
