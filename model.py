@@ -125,11 +125,11 @@ class VGGModel(BaseModel):
         x = self.reshape(x)
         return x
     
-    # def optimizer(self):
-    #     return tf.train.AdamOptimizer(self.config.get('learning_rate'))
+    def optimizer(self):
+        return tf.train.AdamOptimizer(self.config.get('learning_rate'))
     
     def init(self):
-        self.compile(optimizer='sgd',
+        self.compile(optimizer=self.optimizer(),
                      loss='mse',
                      metrics=['mse', 'mae', 'mape'])
     
