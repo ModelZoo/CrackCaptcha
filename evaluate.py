@@ -8,7 +8,7 @@ from sklearn.model_selection import train_test_split
 import cv2
 
 tf.flags.DEFINE_string('dataset', 'dun163', help='Dataset')
-tf.flags.DEFINE_string('checkpoint_name', 'model.ckpt-20', help='Model name')
+tf.flags.DEFINE_string('checkpoint_name', 'model.ckpt-10', help='Model name')
 tf.flags.DEFINE_string('datasets_dir', './datasets', help='Data dir')
 tf.flags.DEFINE_integer('image_width', 600, help='Image width')
 tf.flags.DEFINE_integer('image_height', 300, help='Image height')
