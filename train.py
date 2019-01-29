@@ -8,14 +8,14 @@ import cv2
 
 tf.flags.DEFINE_string('dataset', 'dun163', help='Dataset')
 tf.flags.DEFINE_string('datasets_dir', './datasets', help='Data dir')
-tf.flags.DEFINE_float('learning_rate', 0.001, help='Learning rate')
+tf.flags.DEFINE_float('learning_rate', 0.0001, help='Learning rate')
 tf.flags.DEFINE_integer('image_width', 600, help='Image width')
 tf.flags.DEFINE_integer('image_height', 300, help='Image height')
 tf.flags.DEFINE_integer('epochs', 1000, help='Max epochs')
 tf.flags.DEFINE_integer('early_stop_patience', 500, help='Early stop patience')
 tf.flags.DEFINE_bool('checkpoint_restore', True, help='Model restore')
 tf.flags.DEFINE_string('model_class', 'VGGModel', help='Model restore')
-tf.flags.DEFINE_integer('batch_size', 5, help='Batch size')
+tf.flags.DEFINE_integer('batch_size', 64, help='Batch size')
 tf.flags.DEFINE_integer('checkpoint_save_freq', 1, help='Save model every epoch number')
 
 

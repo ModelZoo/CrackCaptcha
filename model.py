@@ -132,59 +132,11 @@ class VGGModel(BaseModel):
     def optimizer(self):
         return tf.train.AdamOptimizer(self.config.get('learning_rate'))
     
-    def loss(self, y_true, y_pred):
-        y_true, y_pred = 100 * y_true, 100 * y_pred
-        return tf.reduce_mean(tf.square(y_pred - y_true), axis=-1)
-    
     def init(self):
         self.compile(optimizer=self.optimizer(),
-                     loss=self.loss,
+                     loss='mse',
                      metrics=['mse', 'mae', 'mape'])
     
     def infer(self, test_data, batch_size=None):
         logits = self.predict(test_data)
         return logits
-    
-    def evaluate(self,
-                 x=None,
-                 y=None,
-                 batch_size=None,
-                 verbose=1,
-                 sample_weight=None,
-                 steps=None,
-                 max_queue_size=10,
-                 workers=1,
-                 use_multiprocessing=False):
-        # print('X', x)
-        # print('Y', y)
-        
-        y_pred = self.predict(x)
-        
-        result = tf.keras.metrics.mean_squared_error(y_pred=y_pred, y_true=y)
-        print('Result', result)
-        
-        result = tf.keras.metrics.mean_squared_error(y_pred=y, y_true=y)
-        print('Result', result)
-        
-        print('Predict Y', self.predict(x))
-        
-        if batch_size is None and steps is None:
-            batch_size = 32
-        
-        x, y, sample_weights = self._standardize_user_data(
-            x,
-            y,
-            sample_weight=sample_weight,
-            batch_size=batch_size,
-            check_steps=True,
-            steps_name='steps',
-            steps=steps)
-        
-        return training_eager.test_loop(
-            self,
-            inputs=x,
-            targets=y,
-            sample_weights=sample_weights,
-            batch_size=batch_size,
-            verbose=verbose,
-            steps=steps)
