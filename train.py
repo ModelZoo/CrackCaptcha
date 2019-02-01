@@ -18,7 +18,7 @@ tf.flags.DEFINE_bool('checkpoint_restore', True, help='Model restore')
 tf.flags.DEFINE_string('model_class', 'VGGModel', help='Model restore')
 tf.flags.DEFINE_integer('batch_size', 10, help='Batch size')
 tf.flags.DEFINE_integer('checkpoint_save_freq', 1, help='Save model every epoch number')
-tf.flags.DEFINE_integer('enhance_images_number', 50, help='Enhance images number')
+tf.flags.DEFINE_integer('enhance_images_number', 10, help='Enhance images number')
 
 
 class Trainer(BaseTrainer):
