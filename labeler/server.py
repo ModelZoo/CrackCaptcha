@@ -68,5 +68,6 @@ def update():
 def run():
     app.run(debug=True,
             host='0.0.0.0',
+            threaded=True,
             # ssl_context='adhoc',
             port=5000)
