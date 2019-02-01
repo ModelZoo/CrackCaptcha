@@ -37,7 +37,6 @@ def data():
     for index, file in enumerate(files):
         image_path = join('datasets', dataset, file)
         label_path = re.sub(data_map[dataset]['image'], data_map[dataset]['label'], image_path)
-        print(label_path)
         label = open(label_path).read().strip() if exists(label_path) else -1
         result.append({
             'image': join('static', image_path),
