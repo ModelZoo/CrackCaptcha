@@ -1,9 +1,5 @@
 from model_zoo.model import BaseModel
 import tensorflow as tf
-from tensorflow.python.keras.engine import training_arrays, training_eager
-
-
-# from tensorflow
 
 
 class VGGModel(BaseModel):
@@ -102,19 +98,19 @@ class VGGModel(BaseModel):
         x = self.pool3(x)
         x = self.drop3(x, training=training)
         # # layer4
-        # x = self.conv41(x)
-        # x = self.conv42(x)
-        # x = self.conv43(x)
-        # x = self.bn4(x, training=training)
-        # x = self.pool4(x)
-        # x = self.drop4(x, training=training)
-        # # layer5
-        # x = self.conv51(x)
-        # x = self.conv52(x)
-        # x = self.conv53(x)
-        # x = self.bn5(x, training=training)
-        # x = self.pool5(x)
-        # x = self.drop5(x, training=training)
+        x = self.conv41(x)
+        x = self.conv42(x)
+        x = self.conv43(x)
+        x = self.bn4(x, training=training)
+        x = self.pool4(x)
+        x = self.drop4(x, training=training)
+        # layer5
+        x = self.conv51(x)
+        x = self.conv52(x)
+        x = self.conv53(x)
+        x = self.bn5(x, training=training)
+        x = self.pool5(x)
+        x = self.drop5(x, training=training)
         
         # flatten
         x = self.flatten(x)
