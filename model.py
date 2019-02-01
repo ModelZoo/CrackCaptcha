@@ -1,9 +1,5 @@
 from model_zoo.model import BaseModel
 import tensorflow as tf
-from tensorflow.python.keras.engine import training_arrays, training_eager
-
-
-# from tensorflow
 
 
 class VGGModel(BaseModel):
