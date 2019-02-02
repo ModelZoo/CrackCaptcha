@@ -18,7 +18,7 @@ tf.flags.DEFINE_bool('checkpoint_restore', True, help='Model restore')
 tf.flags.DEFINE_string('model_class', 'VGGModel', help='Model restore')
 tf.flags.DEFINE_integer('batch_size', 10, help='Batch size')
 tf.flags.DEFINE_integer('checkpoint_save_freq', 1, help='Save model every epoch number')
-tf.flags.DEFINE_integer('enhance_images_number', 200, help='Enhance images number')
+tf.flags.DEFINE_integer('enhance_images_number', 10, help='Enhance images number')
 
 
 class Trainer(BaseTrainer):
@@ -92,7 +92,7 @@ class Trainer(BaseTrainer):
         
         print('Sample', x_train[0], y_train[0], x_train.dtype, y_train.dtype)
         print('X Train Data Shape', x_train.shape, 'Y Data Shape', y_train.shape)
-        return (x_train, y_train), (x_eval, y_eval)
+        return self.build_generator(x_train, y_train), self.build_generator(x_eval, y_eval), len(x_train), len(x_eval)
 
 
 if __name__ == '__main__':
